@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculate Stuff</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap');
+
+:root {   
+  --theme: #374352;
+  --topShadow : #404b59;
+  --bottomShadow : #2e3845;
+  --colorNum: #fafafb;
+  --colorOpp: #939e9c;
+}
+.theme-dark{
+   --theme : #f9fbff;
+  --topShadow : #f9fbff;
+  --bottomShadow : #d9ecfd;
+  --colorNum: #050606;
+  --colorOpp: #51a3f5;
+}
+.theme-light{
+  --theme: #374352;
+  --topShadow : #404b59;
+  --bottomShadow : #2e3845;
+  --colorNum: #fafafb;
+  --colorOpp: #939e9c;
+}
+h1{
+  text-align:center;
+   color:var(--colorOpp); 
+  opacity:0.5;
+}
+.switch-wrap{
+  position:relative;
+  text-align:center;
+}
+body{
+  min-height:100vh;
+  background:var(--theme);
+  font-family: 'Noto Sans SC', sans-serif;
+  padding-bottom:200px;
+  overflow: hidden;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+.calculator{
+  width:350px;
+  display: flex;
+  flex-wrap:wrap; 
+  margin:0px auto;
+  oveflow:hidden;
+}
+.calculator *{
+  cursor:pointer;
+}
+.total{
+  flex:100%;
+  background:var(--theme);
+  color:var(--colorOpp); 
+  text-align:right;
+  font-size:40px;
+  oveflow:auto;
+  border:0px;
+  margin:1rem 0rem;
+  max-width:95%;
+}
+
+.keys, .clear, .solve{
+  flex: 15%;
+  background:var(--theme);
+  color:var(--colorOpp);
+  border-top-color: #444f5d;
+  border-left-color: #444f5d;
+  border-bottom-color: #444f5d;
+  outline:0px;
+  border:0px;
+  box-shadow: 5px 10px 5px var(--bottomShadow), -5px -5px 5px var(--topShadow);
+  margin:0.5rem 0.5rem;
+  padding:1.2rem 1.5rem;
+  border-radius:12px;
+  font-size:1rem;
+  text-align:center;
+}
+.keys:hover, .clear:hover, .solve:hover{
+  color:#c8ccd0;
+   transition: .1s;
+   transform: translateY(3px);
+   box-shadow: 5px 0px 5px var(--bottomShadow), -5px -5px 5px var(--topShadow);
+}
+
+.keys.num{
+  color:var(--colorNum);
+}
+input:focus{
+    outline: none;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 24px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 40px;
+  width: 40px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0 0px 15px #2020203d;
+  background: white url('https://i.ibb.co/FxzBYR9/night.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+  background: white url('https://i.ibb.co/7JfqXxB/sunny.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+br{
+  user-select: none;
+}
+a {
+  color: #2F56B0;
+  position: relative;
+  text-decoration: none;
+  transition: color .4s ease-out;
+  font-size: 30px;
+}
+
+a:hover {
+  color: #457DFB;
+  right: 0;
+  text-decoration: none;
+}
+
+a:hover:after {
+  border-color: #457DFB;
+  right: 0;
+}
+
+a:after {
+  border-radius: 1em;
+  border-top: .1em solid #2F56B0;
+  content: "";
+  position: absolute;
+    right: 100%;
+    bottom: .14em;
+    left: 0;
+  transition: right .4s cubic-bezier(0,.5,0,1),
+              border-color .4s ease-out;
+}
+
+a:hover:after {
+  animation: anchor-underline 2s cubic-bezier(0,.5,0,1) infinite;
+  border-color: #457DFB;
+}
+
+@keyframes anchor-underline {
+  0%, 10% {
+    left: 0;
+    right: 100%;
+  }
+  40%, 60% {
+    left: 0;
+    right: 0;
+  }
+  90%, 100% {
+    left: 100%;
+    right: 0;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="switch-wrap">
+	<label id="switch" class="switch">
+		<input type="checkbox" onchange="toggleTheme()" id="slider"> <span class="slider round"></span> 
+	</label>
+</div>
+
+<h1>Calculate Stuff</h1>
+
+<div class="calculator">
+	<input type="text" id="myText" class="total">
+	<div class="clear" onclick="clr()">c</div>
+	<div class="keys" onclick="keys('.')">.</div>
+	<div class="keys" onclick="keys('÷')">÷</div>
+	<div class="keys" onclick="keys('/')">/</div><br>
+	<div class="keys num" onclick="keys('1')">1</div>
+	<div class="keys num" onclick="keys('2')">2</div>
+	<div class="keys num" onclick="keys('3')">3</div>
+	<div class="keys" onclick="keys('*')">*</div><br>
+	<div class="keys num" onclick="keys('4')">4</div>
+	<div class="keys num" onclick="keys('5')">5</div>
+	<div class="keys num" onclick="keys('6')">6</div>
+	<div class="keys" onclick="keys('-')">-</div><br>
+	<div class="keys num" onclick="keys('7')">7</div>
+	<div class="keys num" onclick="keys('8')">8</div>
+	<div class="keys num" onclick="keys('9')">9</div>
+	<div class="keys" onclick="keys('+')">+</div><br>
+	<div class="keys num" onclick="keys('0')">0</div>
+	<div class="solve" onclick="solve()">=</div><br>
+</div>
+<br>
+<br><!--<center>
+<a href="https://calculatemecomments.poggypotato.repl.co">View Live Comments On This Calculator</a></center>-->
+<script>
+  function keys(e){	
+	totalvalue = document.getElementById("myText");
+	totalvalue.value += e;    
+}
+
+function clr(){
+	clearvalue = document.getElementById("myText");
+  clearvalue.value = '';  
+}
+
+function solve(){
+
+	sum = document.getElementById("myText");  
+	console.log(sum.value)
+  
+  
+	if(sum.value == "" || sum.value == 'undefined' || sum.value == 'false'){
+  	sum.value = 0;
+  }
+
+  totoalValue = eval(eval(sum).value);
+  
+  sum.value = totoalValue
+  
+}
+// function to set a given theme/color-scheme
+        function setTheme(themeName) {
+            localStorage.setItem('theme', themeName);
+            document.documentElement.className = themeName;
+        }
+
+        // function to toggle between light and dark theme
+        function toggleTheme() {
+            if (localStorage.getItem('theme') === 'theme-dark') {
+                setTheme('theme-light');
+            } else {
+                setTheme('theme-dark');
+            }
+        }
+
+        // Immediately invoked function to set the theme on initial load
+        (function () {
+            if (localStorage.getItem('theme') === 'theme-dark') {
+                setTheme('theme-dark');
+                document.getElementById('slider').checked = false;
+            } else {
+                setTheme('theme-light');
+              document.getElementById('slider').checked = true;
+            }
+        })();
+</script>
+</body>
+</html>
